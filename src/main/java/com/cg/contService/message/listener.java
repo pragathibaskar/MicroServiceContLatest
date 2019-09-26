@@ -9,13 +9,15 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import io.opentracing.Tracer;
 import io.opentracing.Span;
+
 
 @EnableBinding(KStreamProcessorX.class)
 public class listener {
 	
-	
+	@Autowired
+        private Tracer tracer;
 	@Autowired
 	  private MessageSender messageSender;
 	
@@ -27,6 +29,8 @@ public class listener {
 	  Message<Cert> message = new ObjectMapper().readValue(messageJson, new TypeReference<Message<Cert>>(){});
 		 Message<Cert> message1 = new Message<Cert>("CertDenegadaEvent", message.getPayload());
 		 message1.setLabel("Rollback-Denegada-8");
+	    Span span = tracer.buildSpan("Sending rollback Denegada Event from microservice 1").start();
+			  span.finish();
 			messageSender.sendCertdenegada(message1); 
 	 
   }
