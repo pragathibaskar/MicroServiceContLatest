@@ -19,7 +19,7 @@ public class Client {
 	
 	@PostConstruct
 	private void init() {
-		ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8090).usePlaintext(true).build();
+		ManagedChannel channel = ManagedChannelBuilder.forAddress("contable-grpcserver.adifv2.svc", 8090).usePlaintext(true).build();
 		stub = ContableServiceGrpc.newBlockingStub(channel);
 	}
 	
