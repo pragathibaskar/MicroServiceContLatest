@@ -54,8 +54,10 @@ public class Contablecontroller {
 		 if(con!=null) {
       	   Span span = tracer.buildSpan("Succesfully added a contable entry").start();
 			  span.finish();
+			 Span span2 = tracer.buildSpan("Making a call to provision microservice").start();
 		      String msg = client.message(c.getTstamp());
-		      Span span1 = tracer.buildSpan("Getting msg from provision microservice: "+msg).start();
+			 span2.finish();
+		      Span span1 = tracer.buildSpan("Response recieved from provision microservice: "+msg).start();
 			  span1.finish();
 		    return new ResponseEntity<>(con, HttpStatus.OK);
 	 }
